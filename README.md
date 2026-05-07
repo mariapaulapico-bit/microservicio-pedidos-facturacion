@@ -1,5 +1,5 @@
 # 🚀 Microservicio Pedidos y Facturación
-
+> 🔗 **Frontend relacionado:** [frontend-pedidos-facturacion](https://github.com/mariapaulapico-bit/frontend-pedidos-facturacion)
 Microservicio REST en **Node.js + Express** para la gestión de clientes, productos, pedidos, detalles de pedido y facturas. Construido con arquitectura por capas, listo para despliegue en contenedores y con cobertura de pruebas superior al **93%**.
 
 ---
