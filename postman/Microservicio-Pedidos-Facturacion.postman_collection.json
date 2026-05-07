@@ -1,0 +1,669 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Microservicio Pedidos y Facturación",
+		"description": "Colección completa del microservicio REST. Incluye healthcheck y CRUD de clientes, productos, pedidos, detalles y facturas.\n\n**Base URL:** http://localhost:3000\n\n**Estructura:**\n- `/health` y `/health/ready`: chequeos de salud\n- `/api/v1/clientes`: CRUD de clientes\n- `/api/v1/productos`: CRUD de productos\n- `/api/v1/pedidos`: CRUD de pedidos\n- `/api/v1/detalles`: CRUD de detalles de pedido\n- `/api/v1/facturas`: CRUD de facturas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"description": "Endpoints de salud del servicio",
+			"item": [
+				{
+					"name": "GET /health (liveness)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["health"]
+						},
+						"description": "Healthcheck básico - responde 200 si el servicio está vivo."
+					}
+				},
+				{
+					"name": "GET /health/ready (readiness)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health/ready",
+							"host": ["{{baseUrl}}"],
+							"path": ["health", "ready"]
+						},
+						"description": "Readiness probe - verifica conectividad con la base de datos."
+					}
+				},
+				{
+					"name": "GET / (info del servicio)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": ["{{baseUrl}}"],
+							"path": [""]
+						}
+					}
+				},
+				{
+					"name": "GET /api/v1 (info del API)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Clientes",
+			"description": "CRUD completo de clientes",
+			"item": [
+				{
+					"name": "Listar clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes"]
+						}
+					}
+				},
+				{
+					"name": "Obtener cliente por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes", "1"]
+						}
+					}
+				},
+				{
+					"name": "Crear cliente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const data = pm.response.json().data;",
+									"    pm.collectionVariables.set('clienteId', data.id);",
+									"    console.log('Cliente creado con id:', data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Carlos Pérez\",\n    \"email\": \"carlos@ejemplo.com\",\n    \"telefono\": \"3001234567\",\n    \"direccion\": \"Cra 7 #45-22, Bogotá\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Carlos Pérez M.\",\n    \"email\": \"carlos@ejemplo.com\",\n    \"telefono\": \"3009999999\",\n    \"direccion\": \"Cra 7 #45-22, Bogotá\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes/{{clienteId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes", "{{clienteId}}"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes/{{clienteId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes", "{{clienteId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Productos",
+			"description": "CRUD completo de productos",
+			"item": [
+				{
+					"name": "Listar productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/productos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "productos"]
+						}
+					}
+				},
+				{
+					"name": "Obtener producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/productos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "productos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Crear producto",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    pm.collectionVariables.set('productoId', pm.response.json().data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Auriculares Bluetooth\",\n    \"descripcion\": \"Auriculares inalámbricos con cancelación de ruido\",\n    \"precio\": 280000,\n    \"stock\": 25\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/productos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "productos"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Auriculares Bluetooth Pro\",\n    \"descripcion\": \"Versión Pro con mejor batería\",\n    \"precio\": 320000,\n    \"stock\": 15\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/productos/{{productoId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "productos", "{{productoId}}"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/productos/{{productoId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "productos", "{{productoId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"description": "CRUD completo de pedidos",
+			"item": [
+				{
+					"name": "Listar pedidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/pedidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "pedidos"]
+						}
+					}
+				},
+				{
+					"name": "Obtener pedido por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/pedidos/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "pedidos", "1"]
+						}
+					}
+				},
+				{
+					"name": "Listar detalles de un pedido",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/pedidos/1/detalles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "pedidos", "1", "detalles"]
+						}
+					}
+				},
+				{
+					"name": "Crear pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    pm.collectionVariables.set('pedidoId', pm.response.json().data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cliente_id\": 1,\n    \"fecha_pedido\": \"2026-05-07\",\n    \"estado\": \"pendiente\",\n    \"total\": 0\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/pedidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "pedidos"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar pedido (cambiar estado)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cliente_id\": 1,\n    \"fecha_pedido\": \"2026-05-07\",\n    \"estado\": \"completado\",\n    \"total\": 295000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/pedidos/{{pedidoId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "pedidos", "{{pedidoId}}"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar pedido",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/pedidos/{{pedidoId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "pedidos", "{{pedidoId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Detalles de Pedido",
+			"description": "CRUD de detalles de pedido (líneas de un pedido)",
+			"item": [
+				{
+					"name": "Listar todos los detalles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/detalles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "detalles"]
+						}
+					}
+				},
+				{
+					"name": "Obtener detalle por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/detalles/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "detalles", "1"]
+						}
+					}
+				},
+				{
+					"name": "Crear detalle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    pm.collectionVariables.set('detalleId', pm.response.json().data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pedido_id\": 1,\n    \"producto_id\": 2,\n    \"cantidad\": 3,\n    \"precio_unitario\": 45000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/detalles",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "detalles"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar detalle",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pedido_id\": 1,\n    \"producto_id\": 2,\n    \"cantidad\": 5,\n    \"precio_unitario\": 45000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/detalles/{{detalleId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "detalles", "{{detalleId}}"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar detalle",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/detalles/{{detalleId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "detalles", "{{detalleId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Facturas",
+			"description": "CRUD completo de facturas",
+			"item": [
+				{
+					"name": "Listar facturas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/facturas",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "facturas"]
+						}
+					}
+				},
+				{
+					"name": "Obtener factura por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/facturas/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "facturas", "1"]
+						}
+					}
+				},
+				{
+					"name": "Crear factura",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    pm.collectionVariables.set('facturaId', pm.response.json().data.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pedido_id\": 1,\n    \"cliente_id\": 1,\n    \"fecha_emision\": \"2026-05-07\",\n    \"fecha_vencimiento\": \"2026-06-07\",\n    \"monto_total\": 295000,\n    \"pagada\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/facturas",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "facturas"]
+						}
+					}
+				},
+				{
+					"name": "Marcar factura como pagada",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pedido_id\": 1,\n    \"cliente_id\": 1,\n    \"fecha_emision\": \"2026-05-07\",\n    \"fecha_vencimiento\": \"2026-06-07\",\n    \"monto_total\": 295000,\n    \"pagada\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/facturas/{{facturaId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "facturas", "{{facturaId}}"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar factura",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/facturas/{{facturaId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "facturas", "{{facturaId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Casos de Error (validaciones)",
+			"description": "Ejemplos de respuestas de error para probar validaciones",
+			"item": [
+				{
+					"name": "400 - Cliente sin email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Sin email\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes"]
+						}
+					}
+				},
+				{
+					"name": "400 - Email inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"X\",\n    \"email\": \"no-es-email\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes"]
+						}
+					}
+				},
+				{
+					"name": "400 - Producto con precio negativo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"X\",\n    \"precio\": -100\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/productos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "productos"]
+						}
+					}
+				},
+				{
+					"name": "400 - Pedido con estado inválido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"cliente_id\": 1,\n    \"estado\": \"inexistente\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/pedidos",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "pedidos"]
+						}
+					}
+				},
+				{
+					"name": "404 - Cliente inexistente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/clientes/99999",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "clientes", "99999"]
+						}
+					}
+				},
+				{
+					"name": "404 - Ruta inexistente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/no-existe",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "no-existe"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "clienteId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "productoId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "pedidoId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "detalleId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "facturaId",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}

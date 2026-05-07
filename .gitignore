@@ -1,0 +1,9 @@
+node_modules/
+coverage/
+.env
+*.log
+database/*.db
+database/test.db
+.DS_Store
+.vscode/
+.idea/
